@@ -9,18 +9,37 @@ struct node
 };
 node* branch[50001];
 
-int maxx=0;
 int path[50001];
 
-int DeepSearch(int ID,int check)
+int DeepSearch(int ID)
 {
     long int number=0;
+	int road=0;
+	int id=0;
+	int maxx=0;
     for (node* p = branch[ID]; p != NULL; p = p->next)
 	{
-		int temp=DeepSearch(p->ID,0);
+		int temp=DeepSearch(p->ID);
         temp+=p->length;
-        number+=temp;       
-        if(check)maxx=(maxx>temp?maxx:temp);
+        number+=temp;
+		if(maxx<temp)
+		{
+			maxx=temp;
+			road=p->length;
+			id=p->ID;
+		}
+	}
+	if(path[ID]==1)
+	{
+		number=branch[ID]->length;
+		number+=DeepSearch(id);
+	}
+	else if(!path[ID])return 0;
+	else
+	{
+		number-=maxx;
+		number+=road;
+		number+=DeepSearch(id);
 	}
     return number;
 }
@@ -60,18 +79,7 @@ int main()
 			p->next = NULL;
 		}
 	}
-    long int answer;
-	if(path[1]!=1) 
-    {
-        answer=DeepSearch(1,1);
-        answer=(answer-maxx)*2+maxx;
-    }
-    else 
-    {
-        answer=DeepSearch(branch[1]->ID,1);
-        answer=(answer-maxx)*2+maxx;
-        answer+=branch[1]->length;
-    }
+    long int answer=DeepSearch(1);
 	cout << answer;
 	return 0;
 }
