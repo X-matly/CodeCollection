@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 int a[10000005];
-void qsort(int l, int m)
+void qsort(int l, int m) //快排函数
 {
     int mid = a[(l + m) / 2];
     int i = l;
@@ -30,7 +30,7 @@ int main()
     cin >> n >> m;
     for (int i = 0; i < m; i++)
         cin >> a[i];
-    qsort(0, m - 1);
+    qsort(0, m - 1); //快排后输出
     cout << a[n - 1];
     return 0;
 }
